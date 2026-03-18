@@ -129,7 +129,7 @@ body.boxes-page {
     z-index: 10000;
     transition: color 0.2s ease;
     padding: 0;
-}f
+}
 
 .about-btn:hover {
     color: rgba(0, 0, 0, 0.75);
@@ -188,7 +188,7 @@ body.boxes-page {
 }
 
 .about-panel-statement {
-    font-family: 'JetBrains', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     color: rgba(0, 0, 0, 0.6);
     line-height: 1.8;
@@ -196,7 +196,7 @@ body.boxes-page {
 }
 
 .about-panel-desc {
-    font-family: 'JetBrains', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.82rem;
     color: rgba(0, 0, 0, 0.45);
     line-height: 1.7;
@@ -285,7 +285,7 @@ body.about-page {
 }
 
 .about-section-title {
-    font-family: 'JetBrains', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.72rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -295,7 +295,7 @@ body.about-page {
 }
 
 .about-text {
-    font-family: 'JetBrains', monospace;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.92rem;
     color: rgba(0, 0, 0, 0.65);
     line-height: 1.9;
@@ -494,7 +494,7 @@ body.modal-open {
 
 /* DATE */
 .modal-date {
-  font-family: 'JetBrains', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
   color: rgba(255, 255, 255, 0.55);
   white-space: nowrap;
@@ -502,7 +502,7 @@ body.modal-open {
 
 /* DESCRIPTION */
 .modal-desc {
-  font-family: 'JetBrains', monospace;
+  font-family: 'JetBrains Mono', monospace;
   font-size: 0.95rem;
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.7;
@@ -516,13 +516,13 @@ body.modal-open {
 .image-wrapper.expanded {
   position: fixed;
   top: 0;                     
-  left: 0;                      /* anchored to left edge */
+  left: 0;
   width: 100vw;
   height: 100vh;
   z-index: 20000;
   cursor: default;
   overflow: hidden;
-  background-image: url('modal-bg.png');   /* background image — replace with your filename */
+  background-image: url('modal-bg.png');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -607,7 +607,7 @@ body.debug::before {
 
 /*============================================================================================
                                        PHONE DIMENSION
-==============================================================================================
+==============================================================================================*/
 
 /* ----------===== max = screens -> 768px wide (phones)--------------- */
 @media (max-width: 768px) {
@@ -626,7 +626,6 @@ body.debug::before {
     gap: 40px;
     padding-bottom: 80px;
     overflow-y: auto;
-    /* page scroll vertically */
   }
 
   .box-images {
@@ -661,8 +660,40 @@ body.debug::before {
     left: -28px;
   }
 
+  .archive-container {
+    overflow: visible; 
+  }
 
-  /* ------------------------- IMAGE PLACEMENTS (m) -----------------------*/
+  .image-wrapper.expanded {
+    z-index: 20000; 
+    overflow: visible; 
+    isolation: isolate; 
+  }
+
+  .modal-info {
+    top: 52vh;      
+    left: 5vw;       
+    transform: none; 
+    width: 90vw;     /
+    padding: 24px 20px;
+    z-index: 20001; 
+  }
+
+  .image-wrapper.expanded .memory {
+    top: 8vh;
+    left: 50%;
+    transform: translateX(-50%); 
+    width: 80vw;    
+    max-height: 40vh; 
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+    white-space: normal; /* title wraps to a second line if too long */
+  }
+
+
+  /* ------------------------- IMAGE PLACEMENTS (mobile) -----------------------*/
 
   /* ---- FRAGMENTS ---- */
   .m1  { width: 140px; top: 3vh;  left: 5vw;  }
@@ -715,36 +746,6 @@ body.debug::before {
   .m39 { width: 85px;  top: 68vh; left: 76vw; }
   .m40 { width: 155px; top: 14vh; left: 12vw; }
   .m41 { width: 80px;  top: 36vh; left: 8vw;  }
-
-
-/* ---------------------------------------- MODAL INFO ------------------------------------------ */
-
-  .image-wrapper.expanded {
-    width: 100vw;
-    height: 100vh;
-  }
-
-  .image-wrapper.expanded .memory {
-    top: 8vh;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80vw;
-    max-height: 40vh;
-  }
-
-  .modal-info {
-    top: 52vh;
-    left: 5vw;
-    transform: none;
-    width: 90vw;
-    padding: 24px 20px;
-  }
-
-  .modal-title {
-    font-size: 1.2rem;
-    white-space: normal;
-    /* title wraps to a second line if too long */
-  }
 
 }
 
