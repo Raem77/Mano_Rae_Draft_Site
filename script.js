@@ -21,7 +21,7 @@ function showModalInfo(wrapper) {
   modalTitle.textContent = wrapper.dataset.title || "";
   modalDate.textContent  = wrapper.dataset.date  || "";
   modalDesc.textContent  = wrapper.dataset.desc  || "";
-  modalInfo.classList.add("visible"); // CSS opacity fade-in?
+  modalInfo.classList.add("visible"); // CSS opacity fade-in
 }
  
 // hide modal info panel
@@ -40,31 +40,57 @@ function hideModalInfo() {
 
 const overlay = document.getElementById("overlay");
 const archiveContainer = document.querySelector(".archive-container");
+const bgBlur = document.getElementById("bgBlur"); // grabs the dedicated background blur div
+
 let movedWrapper = null;
 // remembers the original parent (archive-container) so we can return the wrapper to it
 let originalParent = null;
 // remembers the next sibling so the wrapper goes back in the exact same position in the DOM
 let originalNextSibling = null;
 
+// call when drag starts —> records starting position and which wrapper is being dragged
+function startDrag(wrapper, clientX, clientY) {
+  moved = false;
+  topZ++;
+  wrapper.style.zIndex = topZ;
+  activeDrag = wrapper;
+  offsetX = clientX - wrapper.offsetLeft; //////// distance mouse/finger to left edge of image
+  offsetY = clientY - wrapper.offsetTop;  //////// distance mouse/finger to top edge of image
+}
+
+// repositions the active wrapper
+function moveDrag(clientX, clientY) {
+  if (!activeDrag) return;
+  moved = true;
+  activeDrag.style.left = (clientX - offsetX) + "px";
+  activeDrag.style.top  = (clientY - offsetY) + "px";
+}
+
+// call when the drag end -> clear the active drag reference
+function endDrag() {
+  activeDrag = null;
+}
 
 // each image
 images.forEach(wrapper => {
 
+  //////////////////---------------- MOUSE DRAG (desktop)----------------------///////////////////////
+  // calls the shared startDrag helper
   wrapper.addEventListener("mousedown", function (e) {
-
-    moved = false;
-
-    topZ++;
-    wrapper.style.zIndex = topZ;
-
-    activeDrag = wrapper;
-    offsetX = e.clientX - wrapper.offsetLeft;
-    offsetY = e.clientY - wrapper.offsetTop;
-
+    startDrag(wrapper, e.clientX, e.clientY);
     e.preventDefault();
   });
 
+  //////////////////---------------- TOUCH DRAG (mobile)----------------------///////////////////////
+  // touchstart listener = images drag
+  // { passive: true } tells the browser this listener won't block scrolling
+  wrapper.addEventListener("touchstart", function (e) {
+    const touch = e.touches[0]; // get the first touch point
+    startDrag(wrapper, touch.clientX, touch.clientY);
+  }, { passive: true });
 
+
+  // -------------- expand/collapse -------------------------//
   wrapper.addEventListener("click", function () {
 
     if (moved) return;
@@ -88,13 +114,12 @@ images.forEach(wrapper => {
       // activate dim background
       overlay.classList.add("active");
       archiveContainer.classList.add("blurred");
-      document.body.classList.add("modal-open"); // locks background when modal opens
+      bgBlur.classList.add("active");           
+      document.body.classList.add("modal-open"); 
 
       originalParent      = wrapper.parentNode;
       originalNextSibling = wrapper.nextSibling;
 
-      // move wrapper out of archive-container and directly into <body>
-      // blur filter on archive-container cannot reach it
       document.body.appendChild(wrapper);
       movedWrapper = wrapper;
       showModalInfo(wrapper);
@@ -104,10 +129,10 @@ images.forEach(wrapper => {
       // remove dim when collapsing
       overlay.classList.remove("active");
       archiveContainer.classList.remove("blurred");
-      document.body.classList.remove("modal-open"); // unlock background scroll when modal closes
+      bgBlur.classList.remove("active");             
+      document.body.classList.remove("modal-open");   
 
       returnWrapper();
-
       hideModalInfo();
 
     }
@@ -118,11 +143,9 @@ images.forEach(wrapper => {
 
 });
 
-
-// put expanded wrapper back where it came from
+// put expanded wrapper back 
 function returnWrapper() {
   if (movedWrapper && originalParent) {
-    // insertBefore with a null nextSibling is the same as appendChild — handles both cases
     originalParent.insertBefore(movedWrapper, originalNextSibling);
   }
   movedWrapper        = null;
@@ -131,21 +154,22 @@ function returnWrapper() {
 }
 
 
+
+
 // move image -> mouse
 document.addEventListener("mousemove", function (e) {
-  if (!activeDrag) return;
-
-  moved = true;
-
-  activeDrag.style.left = (e.clientX - offsetX) + "px";
-  activeDrag.style.top  = (e.clientY - offsetY) + "px";
+  moveDrag(e.clientX, e.clientY);
 });
-
 
 // stop dragging
-document.addEventListener("mouseup", function () {
-  activeDrag = null;
-});
+document.addEventListener("mouseup", endDrag);
+
+document.addEventListener("touchmove", function (e) {
+  const touch = e.touches[0]; // first touch point
+  moveDrag(touch.clientX, touch.clientY);
+}, { passive: true }); // keeps scrolling (mobile)
+
+document.addEventListener("touchend", endDrag); // end drag when finger lift
 
 
 ////////////////////// ---------------- RESET EYE ----------------//////////////////////////////////////
@@ -164,7 +188,8 @@ resetEye.addEventListener("click", function () {
   // image expanded, user clicks reset = dim disappears
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  document.body.classList.remove("modal-open"); // unlocks background scroll when reset eye is clicked
+  bgBlur.classList.remove("active");             
+  document.body.classList.remove("modal-open");  
 
   // return the wrapper to archive-container before resetting positions
   returnWrapper();
@@ -193,7 +218,7 @@ resetEye.addEventListener("click", function () {
 });
 
 
-// -------- CLICK OUTSIDE TO CLOSE --------
+// -------- CLICK OUTSIDE TO CLOSE -------- //
 
 document.addEventListener("click", function (e) {
 
@@ -203,6 +228,10 @@ document.addEventListener("click", function (e) {
   const clickedInsideImage = e.target.closest(".image-wrapper");
   if (clickedInsideImage === expanded) return;
 
+  // ignores click on the modal info panel 
+  const clickedInfo = e.target.closest("#modalInfo");
+  if (clickedInfo) return;
+
   expanded.style.left = expanded.dataset.savedLeft || "";
   expanded.style.top  = expanded.dataset.savedTop  || "";
 
@@ -211,7 +240,8 @@ document.addEventListener("click", function (e) {
   // remove dim on outside click
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  document.body.classList.remove("modal-open"); // unlocks background scroll when clicking outside the modal
+  bgBlur.classList.remove("active");              
+  document.body.classList.remove("modal-open");   
 
   returnWrapper();
 
@@ -230,7 +260,8 @@ overlay.addEventListener("click", function () {
   expanded.classList.remove("expanded");
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  document.body.classList.remove("modal-open"); // unlock background scroll when clicking the dim overlay
+  bgBlur.classList.remove("active");              
+  document.body.classList.remove("modal-open"); 
 
   returnWrapper();
 

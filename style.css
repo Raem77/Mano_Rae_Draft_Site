@@ -604,3 +604,161 @@ body.debug::before {
     opacity: 1;
     pointer-events: auto;
 }
+
+/*============================================================================================
+                                       PHONE DIMENSION
+==============================================================================================
+
+/* ----------===== max = screens -> 768px wide (phones)--------------- */
+@media (max-width: 768px) {
+
+/* ---------------------------------------- INDEX PAGE ------------------------------------------ */
+
+  .eye-link {
+    width: 90vw;
+    height: 64vw;
+  }
+
+/* ---------------------------------------- BOX PAGE ------------------------------------------ */
+
+  .boxes-container {
+    flex-direction: column; /* vertical box stack */
+    gap: 40px;
+    padding-bottom: 80px;
+    overflow-y: auto;
+    /* page scroll vertically */
+  }
+
+  .box-images {
+    width: 160px;
+    height: 160px;
+  }
+
+  .box-label {
+    font-size: 0.75rem;
+  }
+
+  .about-btn {
+    right: auto;
+    left: 28px;
+  }
+
+  .about-panel {
+    width: 100vw;
+  }
+
+
+  /* ---------------------------------------- ARCHIVE PAGE ------------------------------------------ */
+
+  .back-btn {
+    font-size: 0.85rem;
+    padding: 8px 0;
+  }
+
+  .reset-eye {
+    width: 140px;
+    top: -10px;
+    left: -28px;
+  }
+
+
+  /* ------------------------- IMAGE PLACEMENTS (m) -----------------------*/
+
+  /* ---- FRAGMENTS ---- */
+  .m1  { width: 140px; top: 3vh;  left: 5vw;  }
+  .m2  { width: 90px;  top: 5vh;  left: 36vw; }
+  .m3  { width: 160px; top: 4vh;  left: 58vw; }
+  .m4  { width: 80px;  top: 36vh; left: 6vw;  }
+  .m5  { width: 150px; top: 30vh; left: 28vw; }
+  .m6  { width: 95px;  top: 34vh; left: 62vw; }
+  .m7  { width: 160px; top: 32vh; left: 70vw; }
+  .m42 { width: 120px; top: 62vh; left: 6vw;  }
+  .m43 { width: 80px;  top: 64vh; left: 32vw; }
+  .m44 { width: 145px; top: 60vh; left: 50vw; }
+  .m45 { width: 90px;  top: 66vh; left: 72vw; }
+  .m46 { width: 130px; top: 18vh; left: 18vw; }
+
+  /* ---- WOA ---- */
+  .m8  { width: 120px; top: 3vh;  left: 5vw;  }
+  .m9  { width: 80px;  top: 4vh;  left: 30vw; }
+  .m10 { width: 140px; top: 5vh;  left: 50vw; }
+  .m11 { width: 85px;  top: 3vh;  left: 74vw; }
+  .m12 { width: 110px; top: 22vh; left: 6vw;  }
+  .m13 { width: 75px;  top: 20vh; left: 28vw; }
+  .m14 { width: 135px; top: 24vh; left: 46vw; }
+  .m15 { width: 80px;  top: 21vh; left: 72vw; }
+  .m16 { width: 145px; top: 42vh; left: 5vw;  }
+  .m17 { width: 75px;  top: 44vh; left: 38vw; }
+  .m18 { width: 130px; top: 40vh; left: 58vw; }
+  .m19 { width: 70px;  top: 45vh; left: 78vw; }
+  .m20 { width: 115px; top: 62vh; left: 6vw;  }
+  .m21 { width: 80px;  top: 64vh; left: 30vw; }
+  .m22 { width: 145px; top: 60vh; left: 48vw; }
+  .m23 { width: 90px;  top: 66vh; left: 74vw; }
+
+  /* ---- PHOTOS ---- */
+  .m24 { width: 145px; top: 3vh;  left: 5vw;  }
+  .m25 { width: 80px;  top: 5vh;  left: 34vw; }
+  .m26 { width: 135px; top: 4vh;  left: 54vw; }
+  .m27 { width: 85px;  top: 3vh;  left: 76vw; }
+  .m28 { width: 75px;  top: 24vh; left: 5vw;  }
+  .m29 { width: 150px; top: 22vh; left: 22vw; }
+  .m30 { width: 85px;  top: 26vh; left: 56vw; }
+  .m31 { width: 140px; top: 20vh; left: 70vw; }
+  .m32 { width: 110px; top: 44vh; left: 5vw;  }
+  .m33 { width: 75px;  top: 46vh; left: 30vw; }
+  .m34 { width: 145px; top: 42vh; left: 48vw; }
+  .m35 { width: 80px;  top: 48vh; left: 74vw; }
+  .m36 { width: 120px; top: 64vh; left: 5vw;  }
+  .m37 { width: 75px;  top: 66vh; left: 32vw; }
+  .m38 { width: 135px; top: 62vh; left: 50vw; }
+  .m39 { width: 85px;  top: 68vh; left: 76vw; }
+  .m40 { width: 155px; top: 14vh; left: 12vw; }
+  .m41 { width: 80px;  top: 36vh; left: 8vw;  }
+
+
+/* ---------------------------------------- MODAL INFO ------------------------------------------ */
+
+  .image-wrapper.expanded {
+    width: 100vw;
+    height: 100vh;
+  }
+
+  .image-wrapper.expanded .memory {
+    top: 8vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80vw;
+    max-height: 40vh;
+  }
+
+  .modal-info {
+    top: 52vh;
+    left: 5vw;
+    transform: none;
+    width: 90vw;
+    padding: 24px 20px;
+  }
+
+  .modal-title {
+    font-size: 1.2rem;
+    white-space: normal;
+    /* title wraps to a second line if too long */
+  }
+
+}
+
+
+/* --------------- max = screens -> (phones under 380px) -------------*/
+@media (max-width: 380px) {
+
+  .box-images {
+    width: 130px;
+    height: 130px;
+  }
+
+  .modal-title {
+    font-size: 1rem;
+  }
+
+}
