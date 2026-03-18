@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Remember</title>
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body class="boxes-page">
+
+  <!-- zoom overlay - when box is clicked -->
+  <div class="zoom-overlay" id="zoomOverlay"></div>
+
+  <!-- ---ABOUT BUTTON--- -->
+  <button class="about-btn" id="aboutBtn">About</button>
+
+  <!-- -----------------------------------ABOUT PANEL--------------------------------------------- -->
+  <div class="about-panel" id="aboutPanel">
+
+    <button class="about-panel-close" id="aboutPanelClose">×</button>
+
+    <div class="about-panel-content">
+
+      <p class="about-panel-name">Box of memories</p>
+
+      <p class="about-panel-statement">
+Memories can be held, revisited, and preserved through the objects we choose to keep.
+
+Over the years, I have collected small fragments of time: photographs, notes, objects, and traces of moments that I did not want to lose. Kept inside boxes, these personal archives became a physical memoir: a way of holding onto experiences, emotions, and details that might otherwise fade.
+
+      </p>
+
+      <p class="about-panel-desc">
+        Point and click simulation *
+      </p>
+
+      <a href="about.html" class="about-panel-more"> more → </a>
+
+    </div>
+  </div>
+
+  <!-- Dim overlay behind the panel — clicking it closes the panel -->
+  <div class="about-overlay" id="aboutOverlay"></div>
+
+
+  <!-- ------------------------------------------------- BOXES ---------------------------------------- -->
+  <div class="boxes-container">
+
+
+    <!-- BOX 1 — fragments -->
+    <div class="box" id="box-fragments" data-href="archive-fragments.html">
+      <div class="box-images">
+
+        <img src="boxes/box1-closed.png" class="box-closed" alt="box closed">
+        <img src="boxes/box1-mid.png"    class="box-mid"    alt="box opening">
+        <img src="boxes/box1-open.png"   class="box-open"   alt="box open">
+        
+      </div>
+      <span class="box-label">Fragments</span>
+    </div>
+
+    <!-- BOX 2 — words of affirmation -->
+    <div class="box" id="box-words" data-href="archive-words.html">
+      <div class="box-images">
+
+        <img src="boxes/box2-closed.png" class="box-closed" alt="box closed">
+        <img src="boxes/box2-mid.png"    class="box-mid"    alt="box opening">
+        <img src="boxes/box2-open.png"   class="box-open"   alt="box open">
+
+      </div>
+      <span class="box-label">Words of Affirmation</span>
+    </div>
+
+    <!-- BOX 3 — photos -->
+    <div class="box" id="box-photos" data-href="archive-photos.html">
+      <div class="box-images">
+
+        <img src="boxes/box3-closed.png" class="box-closed" alt="box closed">
+        <img src="boxes/box3-mid.png"    class="box-mid"    alt="box opening">
+        <img src="boxes/box3-open.png"   class="box-open"   alt="box open">
+
+      </div>
+      <span class="box-label">Photos</span>
+    </div>
+
+  </div>
+
+  <script>
+///////////////////////-------------------- BOX ZOOM -------------------////////////////////////
+
+const boxes = document.querySelectorAll('.box');
+const zoomOverlay = document.getElementById('zoomOverlay');
+
+boxes.forEach(box => {
+
+  box.addEventListener('click', function () {
+    const destination = this.dataset.href;
+    const rect = this.getBoundingClientRect();
+    const centerX = rect.left + rect.width  / 2;
+    const centerY = rect.top  + rect.height / 2;
+
+    zoomOverlay.style.transformOrigin = `${centerX}px ${centerY}px`;
+    zoomOverlay.classList.add('zooming');
+    zoomOverlay.addEventListener('animationend', () => {
+      window.location.href = destination;
+    }, { once: true });
+
+  });
+});
+
+
+    ///////////////////---------------------- ABOUT PANEL -------------------//////////////////////
+    const aboutBtn        = document.getElementById('aboutBtn');
+    const aboutPanel      = document.getElementById('aboutPanel');
+    const aboutPanelClose = document.getElementById('aboutPanelClose');
+    const aboutOverlay    = document.getElementById('aboutOverlay');
+
+    function openPanel() {
+      aboutPanel.classList.add('open');
+      aboutOverlay.classList.add('active');
+    }
+
+    function closePanel() {
+      aboutPanel.classList.remove('open');
+      aboutOverlay.classList.remove('active');
+    }
+
+    aboutBtn.addEventListener('click', openPanel);
+    aboutPanelClose.addEventListener('click', closePanel);
+    aboutOverlay.addEventListener('click', closePanel);
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fragments</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.cdnfonts.com/css/comico" rel="stylesheet">
+  <link href="https://fonts.cdnfonts.com/css/digital-7-mono" rel="stylesheet">
+</head>
+<body>
+
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Reset eye — returns images to original positions -->
+  <img src="eye_open.png"
+       class="reset-eye"
+       id="resetEye"
+       data-open="eye_open.png"
+       data-closed="eye_closed.png">
+
+  <!-- Back button — returns to the box selection page -->
+  <a href="boxes.html" class="back-btn">← back</a>
+
+  <!-- Modal info panel -->
+  <div class="modal-info" id="modalInfo">
+    <span class="modal-title" id="modalTitle"></span>
+    <span class="modal-date"  id="modalDate"></span>
+    <span class="modal-desc"  id="modalDesc"></span>
+  </div>
+
+  <div class="archive-container">
+
+    <div class="image-wrapper m1"
+         data-title="Fragment One"
+         data-date="01 / 01 / 2024"
+         data-desc="A quiet afternoon. The light was different that day.">
+      <img src="images/img1.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m2"
+         data-title="Fragment Two"
+         data-date="02 / 03 / 2024"
+         data-desc="Something worth keeping. Found between two moments.">
+      <img src="images/img2.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m3"
+         data-title="Fragment Three"
+         data-date="14 / 04 / 2024"
+         data-desc="Smaller than expected. Bigger in retrospect.">
+      <img src="images/img3.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m4"
+         data-title="Fragment Four"
+         data-date="22 / 05 / 2024"
+         data-desc="The kind of place you only notice once it's gone.">
+      <img src="images/img4.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m5"
+         data-title="Fragment Five"
+         data-date="30 / 06 / 2024"
+         data-desc="End of something. Beginning of something else.">
+      <img src="images/img5.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m6"
+         data-title="Fragment Six"
+         data-date="07 / 07 / 2024"
+         data-desc="Wide. Open. Nothing needed to be said.">
+      <img src="images/img6.jpg" class="memory">
+    </div>
+
+    <div class="image-wrapper m7"
+         data-title="Fragment Seven"
+         data-date="18 / 08 / 2024"
+         data-desc="Shot on film. Waited three weeks to see it.">
+      <img src="images/img7.jpg" class="memory">
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
