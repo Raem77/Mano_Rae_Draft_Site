@@ -86,7 +86,7 @@ body.boxes-page {
 .box:hover .box-open   { opacity: 1; transition-delay: 0.15s; }
 
 .box-label {
-    font-family:  'Comico', sans-serif;
+    font-family: 'Comico', sans-serif;
     font-size: 0.8rem;
     letter-spacing: 0.14em;
     text-transform: uppercase;
@@ -180,7 +180,7 @@ body.boxes-page {
 }
 
 .about-panel-name {
-    font-family:  'Comico', sans-serif;
+    font-family: 'Comico', sans-serif;
     font-size: 1.4rem;
     color: rgba(0, 0, 0, 0.85);
     margin: 0;
@@ -204,7 +204,7 @@ body.boxes-page {
 }
 
 .about-panel-more {
-    font-family:  'Comico', sans-serif;
+    font-family: 'Comico', sans-serif;
     font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -401,7 +401,7 @@ body.modal-open {
 }
 
 
-/* ---------------------------------------- IMAGES---------------------------------------- */
+/* ---------------------------------------- IMAGES ---------------------------------------- */
 
 /* ---- FRAGMENTS ---- */
 
@@ -464,17 +464,17 @@ body.modal-open {
 /* ---------------------------------------- MODAL INFO ------------------------------------------ */
 
 .modal-info {
-  position: fixed;              
-  top: 50%;                     
-  transform: translateY(-50%);  
-  left: 50%;                    
-  width: 45%;                   
-  padding: 48px;                
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 50%;
+  width: 45%;
+  padding: 48px;
   box-sizing: border-box;
   display: flex;
-  flex-direction: column;       
+  flex-direction: column;
   gap: 16px;
-  z-index: 20001;             
+  z-index: 20001;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -484,10 +484,10 @@ body.modal-open {
   opacity: 1;
 }
 
-/* TITLE  */
+/* TITLE */
 .modal-title {
   font-family: 'Comico', sans-serif;
-  font-size: 1.6rem;           
+  font-size: 1.6rem;
   color: rgba(255, 255, 255, 0.9);
   white-space: nowrap;
 }
@@ -515,7 +515,7 @@ body.modal-open {
 
 .image-wrapper.expanded {
   position: fixed;
-  top: 0;                     
+  top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
@@ -529,15 +529,15 @@ body.modal-open {
 }
 
 .image-wrapper.expanded .memory {
-  position: absolute;         
-  top: 5vh;                    
-  left: 4vw;                   
-  width: 42vw;                 
-  max-height: 50vh;            
+  position: absolute;
+  top: 5vh;
+  left: 4vw;
+  width: 42vw;
+  max-height: 50vh;
   height: auto;
-  object-fit: contain;          
+  object-fit: contain;
   display: block;
-  margin: 0;                   
+  margin: 0;
 }
 
 .image-wrapper.expanded::after {
@@ -605,24 +605,25 @@ body.debug::before {
     pointer-events: auto;
 }
 
+
 /*============================================================================================
                                        PHONE DIMENSION
 ==============================================================================================*/
 
-/* ----------===== max = screens -> 768px wide (phones)--------------- */
+/* screens up to 768px wide */
 @media (max-width: 768px) {
 
-/* ---------------------------------------- INDEX PAGE ------------------------------------------ */
+  /* ---------------------------------------- INDEX PAGE ------------------------------------------ */
 
   .eye-link {
     width: 90vw;
     height: 64vw;
   }
 
-/* ---------------------------------------- BOX PAGE ------------------------------------------ */
+  /* ---------------------------------------- BOX PAGE ------------------------------------------ */
 
   .boxes-container {
-    flex-direction: column; /* vertical box stack */
+    flex-direction: column;
     gap: 40px;
     padding-bottom: 80px;
     overflow-y: auto;
@@ -646,7 +647,6 @@ body.debug::before {
     width: 100vw;
   }
 
-
   /* ---------------------------------------- ARCHIVE PAGE ------------------------------------------ */
 
   .back-btn {
@@ -660,40 +660,48 @@ body.debug::before {
     left: -28px;
   }
 
+  /* overflow:hidden was clipping the modal on mobile —
+     visible lets the expanded wrapper sit cleanly above it */
   .archive-container {
-    overflow: visible; 
+    overflow: visible;
   }
 
+  /* isolation:isolate stops bg-blur bleeding into the expanded image.
+     overflow:visible stops modal-info text being clipped. */
   .image-wrapper.expanded {
-    z-index: 20000; 
-    overflow: visible; 
-    isolation: isolate; 
+    overflow: visible;
+    isolation: isolate;
+    z-index: 20000;
   }
 
-  .modal-info {
-    top: 52vh;      
-    left: 5vw;       
-    transform: none; 
-    width: 90vw;     /
-    padding: 24px 20px;
-    z-index: 20001; 
-  }
-
+  /* image centres at the top half of the screen */
   .image-wrapper.expanded .memory {
     top: 8vh;
     left: 50%;
-    transform: translateX(-50%); 
-    width: 80vw;    
-    max-height: 40vh; 
+    transform: translateX(-50%);
+    width: 80vw;
+    max-height: 40vh;
+  }
+
+  /* FIXED: removed stray "/" that was breaking the CSS parser —
+     everything after that character in this block was being ignored,
+     which is why none of these mobile modal rules were applying */
+  .modal-info {
+    top: 52vh;
+    left: 5vw;
+    transform: none;
+    width: 90vw;
+    padding: 24px 20px;
+    z-index: 20001;
   }
 
   .modal-title {
     font-size: 1.2rem;
-    white-space: normal; /* title wraps to a second line if too long */
+    white-space: normal;
   }
 
 
-  /* ------------------------- IMAGE PLACEMENTS (mobile) -----------------------*/
+  /* ---- IMAGE PLACEMENTS (mobile) ---- */
 
   /* ---- FRAGMENTS ---- */
   .m1  { width: 140px; top: 3vh;  left: 5vw;  }
@@ -750,7 +758,7 @@ body.debug::before {
 }
 
 
-/* --------------- max = screens -> (phones under 380px) -------------*/
+/* screens under 380px */
 @media (max-width: 380px) {
 
   .box-images {
