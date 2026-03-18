@@ -386,7 +386,6 @@ body.modal-open {
     box-shadow: inset 0 0 120px rgba(0, 0, 0, 0.6);
 }
 
-
 /* wrapper - JavaScript */
 .image-wrapper {
     position: absolute;
@@ -404,7 +403,6 @@ body.modal-open {
 /* ---------------------------------------- IMAGES ---------------------------------------- */
 
 /* ---- FRAGMENTS ---- */
-
 .m1  { width: 360px; top: 2vh;  left: 5vw;  }
 .m2  { width: 180px; top: 4vh;  left: 36vw; }
 .m3  { width: 400px; top: 3vh;  left: 56vw; }
@@ -418,9 +416,7 @@ body.modal-open {
 .m45 { width: 210px; top: 72vh; left: 72vw; }
 .m46 { width: 320px; top: 18vh; left: 18vw; }
 
-
 /* ---- WOA ---- */
-
 .m8  { width: 320px; top: 2vh;  left: 5vw;  }
 .m9  { width: 160px; top: 3vh;  left: 30vw; }
 .m10 { width: 380px; top: 4vh;  left: 48vw; }
@@ -438,9 +434,7 @@ body.modal-open {
 .m22 { width: 390px; top: 64vh; left: 48vw; }
 .m23 { width: 220px; top: 70vh; left: 76vw; }
 
-
 /* ---- PHOTOS ---- */
-
 .m24 { width: 380px; top: 2vh;  left: 5vw;  }
 .m25 { width: 170px; top: 4vh;  left: 34vw; }
 .m26 { width: 350px; top: 3vh;  left: 52vw; }
@@ -463,11 +457,12 @@ body.modal-open {
 
 /* ---------------------------------------- MODAL INFO ------------------------------------------ */
 
+/* DESKTOP: info sits in the right half of the screen, vertically centred */
 .modal-info {
   position: fixed;
   top: 50%;
-  transform: translateY(-50%);
   left: 50%;
+  transform: translateY(-50%);
   width: 45%;
   padding: 48px;
   box-sizing: border-box;
@@ -484,7 +479,6 @@ body.modal-open {
   opacity: 1;
 }
 
-/* TITLE */
 .modal-title {
   font-family: 'Comico', sans-serif;
   font-size: 1.6rem;
@@ -492,7 +486,6 @@ body.modal-open {
   white-space: nowrap;
 }
 
-/* DATE */
 .modal-date {
   font-family: 'JetBrains Mono', monospace;
   font-size: 1rem;
@@ -500,7 +493,6 @@ body.modal-open {
   white-space: nowrap;
 }
 
-/* DESCRIPTION */
 .modal-desc {
   font-family: 'JetBrains Mono', monospace;
   font-size: 0.95rem;
@@ -513,6 +505,7 @@ body.modal-open {
 
 /* ---------------------------------------- MODAL WINDOW ------------------------------------------ */
 
+/* DESKTOP: full screen, image top-left quarter */
 .image-wrapper.expanded {
   position: fixed;
   top: 0;
@@ -528,6 +521,7 @@ body.modal-open {
   background-repeat: no-repeat;
 }
 
+/* DESKTOP: image pinned top-left quarter */
 .image-wrapper.expanded .memory {
   position: absolute;
   top: 5vh;
@@ -610,89 +604,75 @@ body.debug::before {
                                        PHONE DIMENSION
 ==============================================================================================*/
 
-/* screens up to 768px wide */
 @media (max-width: 768px) {
 
-  /* ---------------------------------------- INDEX PAGE ------------------------------------------ */
-
+  /* ---- INDEX ---- */
   .eye-link {
     width: 90vw;
     height: 64vw;
   }
 
-  /* ---------------------------------------- BOX PAGE ------------------------------------------ */
-
+  /* ---- BOXES ---- */
   .boxes-container {
     flex-direction: column;
     gap: 40px;
     padding-bottom: 80px;
     overflow-y: auto;
   }
-
   .box-images {
     width: 160px;
     height: 160px;
   }
-
   .box-label {
     font-size: 0.75rem;
   }
-
   .about-btn {
     right: auto;
     left: 28px;
   }
-
   .about-panel {
     width: 100vw;
   }
 
-  /* ---------------------------------------- ARCHIVE PAGE ------------------------------------------ */
-
+  /* ---- ARCHIVE ---- */
   .back-btn {
     font-size: 0.85rem;
     padding: 8px 0;
   }
-
   .reset-eye {
     width: 140px;
     top: -10px;
     left: -28px;
   }
 
-  /* overflow:hidden was clipping the modal on mobile —
-     visible lets the expanded wrapper sit cleanly above it */
+  /* overflow:hidden was clipping the modal on mobile */
   .archive-container {
     overflow: visible;
   }
 
-  /* isolation:isolate stops bg-blur bleeding into the expanded image.
-     overflow:visible stops modal-info text being clipped. */
+  /* ---- MODAL WINDOW (mobile) ----*/
   .image-wrapper.expanded {
-    overflow: visible;
-    isolation: isolate;
-    z-index: 20000;
+    overflow: visible; /* stops modal-info being clipped by this wrapper*/
+    isolation: isolate; /*stops bg-blur filter bleeding into the expanded image */
   }
 
-  /* image centres at the top half of the screen */
+  /* ---- EXPANDED IMAGE (mobile) ----*/
   .image-wrapper.expanded .memory {
-    top: 8vh;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 80vw;
-    max-height: 40vh;
+    top: 8vh !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    width: 80vw !important;
+    max-height: 40vh !important;
+    margin: 0 !important;
   }
 
-  /* FIXED: removed stray "/" that was breaking the CSS parser —
-     everything after that character in this block was being ignored,
-     which is why none of these mobile modal rules were applying */
+  /* ---- MODAL INFO (mobile) ---- */
   .modal-info {
-    top: 52vh;
-    left: 5vw;
-    transform: none;
-    width: 90vw;
-    padding: 24px 20px;
-    z-index: 20001;
+    top: 56vh !important;
+    left: 5vw !important;
+    transform: none !important;
+    width: 90vw !important;
+    padding: 20px !important;
   }
 
   .modal-title {
@@ -700,10 +680,9 @@ body.debug::before {
     white-space: normal;
   }
 
-
   /* ---- IMAGE PLACEMENTS (mobile) ---- */
 
-  /* ---- FRAGMENTS ---- */
+  /* FRAGMENTS */
   .m1  { width: 140px; top: 3vh;  left: 5vw;  }
   .m2  { width: 90px;  top: 5vh;  left: 36vw; }
   .m3  { width: 160px; top: 4vh;  left: 58vw; }
@@ -717,7 +696,7 @@ body.debug::before {
   .m45 { width: 90px;  top: 66vh; left: 72vw; }
   .m46 { width: 130px; top: 18vh; left: 18vw; }
 
-  /* ---- WOA ---- */
+  /* WOA */
   .m8  { width: 120px; top: 3vh;  left: 5vw;  }
   .m9  { width: 80px;  top: 4vh;  left: 30vw; }
   .m10 { width: 140px; top: 5vh;  left: 50vw; }
@@ -735,7 +714,7 @@ body.debug::before {
   .m22 { width: 145px; top: 60vh; left: 48vw; }
   .m23 { width: 90px;  top: 66vh; left: 74vw; }
 
-  /* ---- PHOTOS ---- */
+  /* PHOTOS */
   .m24 { width: 145px; top: 3vh;  left: 5vw;  }
   .m25 { width: 80px;  top: 5vh;  left: 34vw; }
   .m26 { width: 135px; top: 4vh;  left: 54vw; }
@@ -758,16 +737,13 @@ body.debug::before {
 }
 
 
-/* screens under 380px */
+/* very small phones */
 @media (max-width: 380px) {
-
   .box-images {
     width: 130px;
     height: 130px;
   }
-
   .modal-title {
     font-size: 1rem;
   }
-
 }
