@@ -21,12 +21,13 @@ function showModalInfo(wrapper) {
   modalTitle.textContent = wrapper.dataset.title || "";
   modalDate.textContent  = wrapper.dataset.date  || "";
   modalDesc.textContent  = wrapper.dataset.desc  || "";
-  modalInfo.classList.add("visible");
+  modalInfo.classList.add("visible"); // CSS opacity fade-in?
 }
  
 // hide modal info panel
 function hideModalInfo() {
   modalInfo.classList.remove("visible");
+  // clear text after the fade-out transition finishes (0.3s)
   setTimeout(() => {
     modalTitle.textContent = "";
     modalDate.textContent  = "";
@@ -35,65 +36,43 @@ function hideModalInfo() {
 }
 
 
-/////////// overlay + container ///////////
+/////////// <div class="overlay" id="overlay"></div>/////////////
 
-const overlay          = document.getElementById("overlay");
+const overlay = document.getElementById("overlay");
 const archiveContainer = document.querySelector(".archive-container");
-const bgBlur           = document.getElementById("bgBlur");
-
-let movedWrapper        = null;
-let originalParent      = null;
+let movedWrapper = null;
+// remembers the original parent (archive-container) so we can return the wrapper to it
+let originalParent = null;
+// remembers the next sibling so the wrapper goes back in the exact same position in the DOM
 let originalNextSibling = null;
 
 
-/////////////////////// DRAG HELPERS ////////////////
-
-function startDrag(wrapper, clientX, clientY) {
-  moved = false;
-  topZ++;
-  wrapper.style.zIndex = topZ;
-  activeDrag = wrapper;
-  offsetX = clientX - wrapper.offsetLeft;
-  offsetY = clientY - wrapper.offsetTop;
-}
-
-function moveDrag(clientX, clientY) {
-  if (!activeDrag) return;
-  moved = true;
-  activeDrag.style.left = (clientX - offsetX) + "px";
-  activeDrag.style.top  = (clientY - offsetY) + "px";
-}
-
-function endDrag() {
-  activeDrag = null;
-}
-
-
-///////////////-------------- EACH IMAGE ----------------------///////////////////
-
+// each image
 images.forEach(wrapper => {
 
-  // mouse drag (desktop)
   wrapper.addEventListener("mousedown", function (e) {
-    startDrag(wrapper, e.clientX, e.clientY);
+
+    moved = false;
+
+    topZ++;
+    wrapper.style.zIndex = topZ;
+
+    activeDrag = wrapper;
+    offsetX = e.clientX - wrapper.offsetLeft;
+    offsetY = e.clientY - wrapper.offsetTop;
+
     e.preventDefault();
   });
 
-  // touch drag (mobile)
-  wrapper.addEventListener("touchstart", function (e) {
-    const touch = e.touches[0];
-    startDrag(wrapper, touch.clientX, touch.clientY);
-  }, { passive: true });
 
-
-  // click / tap to expand
   wrapper.addEventListener("click", function () {
 
     if (moved) return;
 
-    // collapse any other expanded image first
     images.forEach(img => {
-      if (img !== wrapper) img.classList.remove("expanded");
+      if (img !== wrapper) {
+        img.classList.remove("expanded");
+      }
     });
 
     wrapper.style.left = "";
@@ -106,77 +85,45 @@ images.forEach(wrapper => {
       topZ++;
       wrapper.style.zIndex = topZ;
 
+      // activate dim background
       overlay.classList.add("active");
       archiveContainer.classList.add("blurred");
-      bgBlur.classList.add("active");
-      document.body.classList.add("modal-open");
+      document.body.classList.add("modal-open"); // locks background when modal opens
 
       originalParent      = wrapper.parentNode;
       originalNextSibling = wrapper.nextSibling;
 
-      // move wrapper out of archive-container into <body>
+      // move wrapper out of archive-container and directly into <body>
+      // blur filter on archive-container cannot reach it
       document.body.appendChild(wrapper);
       movedWrapper = wrapper;
-
-      wrapper.style.left   = "";
-      wrapper.style.top    = "";
-      wrapper.style.width  = "";
-      wrapper.style.filter = "none"; // expanded image to be unblurred
-                                    
-
-      if (window.innerWidth <= 768) {
-        modalInfo.style.top       = "56vh";
-        modalInfo.style.left      = "5vw";
-        modalInfo.style.transform = "none";
-        modalInfo.style.width     = "90vw";
-        modalInfo.style.padding   = "20px";
-      } else {
-        // reset to desktop CSS values 
-        modalInfo.style.top       = "";
-        modalInfo.style.left      = "";
-        modalInfo.style.transform = "";
-        modalInfo.style.width     = "";
-        modalInfo.style.padding   = "";
-      }
-
       showModalInfo(wrapper);
 
     } else {
 
+      // remove dim when collapsing
       overlay.classList.remove("active");
       archiveContainer.classList.remove("blurred");
-      bgBlur.classList.remove("active");
-      document.body.classList.remove("modal-open");
-
-      // clear the inline modal-info styles when close
-      modalInfo.style.top       = "";
-      modalInfo.style.left      = "";
-      modalInfo.style.transform = "";
-      modalInfo.style.width     = "";
-      modalInfo.style.padding   = "";
+      document.body.classList.remove("modal-open"); // unlock background scroll when modal closes
 
       returnWrapper();
+
       hideModalInfo();
+
     }
 
     activeDrag = null;
+
   });
 
 });
 
 
-////////////// ------------ RETURN WRAPPER ---------///////////
-
+// put expanded wrapper back where it came from
 function returnWrapper() {
   if (movedWrapper && originalParent) {
+    // insertBefore with a null nextSibling is the same as appendChild — handles both cases
     originalParent.insertBefore(movedWrapper, originalNextSibling);
-  }
-
-  if (movedWrapper) {
-    movedWrapper.style.left   = "";
-    movedWrapper.style.top    = "";
-    movedWrapper.style.width  = "";
-    movedWrapper.style.filter = "";
   }
   movedWrapper        = null;
   originalParent      = null;
@@ -184,26 +131,24 @@ function returnWrapper() {
 }
 
 
-// mouse move // 
-
+// move image -> mouse
 document.addEventListener("mousemove", function (e) {
-  moveDrag(e.clientX, e.clientY);
+  if (!activeDrag) return;
+
+  moved = true;
+
+  activeDrag.style.left = (e.clientX - offsetX) + "px";
+  activeDrag.style.top  = (e.clientY - offsetY) + "px";
 });
 
-document.addEventListener("mouseup", endDrag);
+
+// stop dragging
+document.addEventListener("mouseup", function () {
+  activeDrag = null;
+});
 
 
-// touch move //
-
-document.addEventListener("touchmove", function (e) {
-  const touch = e.touches[0];
-  moveDrag(touch.clientX, touch.clientY);
-}, { passive: true });
-
-document.addEventListener("touchend", endDrag);
-
-
-///////////------------------- RESET EYE ------------------///////////
+////////////////////// ---------------- RESET EYE ----------------//////////////////////////////////////
 
 const resetEye = document.getElementById("resetEye"); 
 
@@ -215,17 +160,13 @@ resetEye.addEventListener("click", function () {
     wrapper.style.opacity = "0.4";
   });
 
+  // overlay off
+  // image expanded, user clicks reset = dim disappears
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  bgBlur.classList.remove("active");
-  document.body.classList.remove("modal-open");
+  document.body.classList.remove("modal-open"); // unlocks background scroll when reset eye is clicked
 
-  modalInfo.style.top       = "";
-  modalInfo.style.left      = "";
-  modalInfo.style.transform = "";
-  modalInfo.style.width     = "";
-  modalInfo.style.padding   = "";
-
+  // return the wrapper to archive-container before resetting positions
   returnWrapper();
 
   setTimeout(() => {
@@ -233,12 +174,14 @@ resetEye.addEventListener("click", function () {
     topZ = 10;
 
     images.forEach(wrapper => {
+
       wrapper.classList.remove("expanded");
+
       wrapper.style.left    = "";
       wrapper.style.top     = "";
       wrapper.style.zIndex  = "";
-      wrapper.style.opacity = "";
-      wrapper.style.filter  = ""; // clear filter on reset
+      wrapper.style.opacity = "1";
+
     });
 
     resetEye.src = resetEye.dataset.open;
@@ -246,10 +189,11 @@ resetEye.addEventListener("click", function () {
   }, 400);
 
   hideModalInfo();
+
 });
 
 
-// ----------------------------- CLICK OUT --------------------------------------------
+// -------- CLICK OUTSIDE TO CLOSE --------
 
 document.addEventListener("click", function (e) {
 
@@ -259,27 +203,24 @@ document.addEventListener("click", function (e) {
   const clickedInsideImage = e.target.closest(".image-wrapper");
   if (clickedInsideImage === expanded) return;
 
-  const clickedInfo = e.target.closest("#modalInfo");
-  if (clickedInfo) return;
+  expanded.style.left = expanded.dataset.savedLeft || "";
+  expanded.style.top  = expanded.dataset.savedTop  || "";
 
   expanded.classList.remove("expanded");
+
+  // remove dim on outside click
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  bgBlur.classList.remove("active");
-  document.body.classList.remove("modal-open");
-
-  modalInfo.style.top       = "";
-  modalInfo.style.left      = "";
-  modalInfo.style.transform = "";
-  modalInfo.style.width     = "";
-  modalInfo.style.padding   = "";
+  document.body.classList.remove("modal-open"); // unlocks background scroll when clicking outside the modal
 
   returnWrapper();
-  hideModalInfo();
+
+  hideModalInfo(); // hides the info panel when click outside image
+
 });
 
 
-//////////////------------------------------- OVERLAY CLICK TO CLOSE -------------------/////////////////
+//////////////////////////// Clicking on the dim background also closes image////////////////////////////////////////
 
 overlay.addEventListener("click", function () {
 
@@ -289,15 +230,10 @@ overlay.addEventListener("click", function () {
   expanded.classList.remove("expanded");
   overlay.classList.remove("active");
   archiveContainer.classList.remove("blurred");
-  bgBlur.classList.remove("active");
-  document.body.classList.remove("modal-open");
-
-  modalInfo.style.top       = "";
-  modalInfo.style.left      = "";
-  modalInfo.style.transform = "";
-  modalInfo.style.width     = "";
-  modalInfo.style.padding   = "";
+  document.body.classList.remove("modal-open"); // unlock background scroll when clicking the dim overlay
 
   returnWrapper();
-  hideModalInfo();
+
+  hideModalInfo(); // hide info panel when click the dim overlay 
+
 });
